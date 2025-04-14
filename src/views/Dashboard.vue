@@ -6,8 +6,8 @@
     </div>
     
     <!-- 统计卡片 -->
-    <el-row :gutter="20" class="stats-row">
-      <el-col :xs="24" :sm="12" :md="6">
+    <el-row :gutter="18 " class="stats-row">
+      <el-col :xs="24" :sm="12" :md="8">
         <el-card shadow="hover" class="stats-card">
           <div class="stats-icon videos-icon">
             <el-icon><VideoCamera /></el-icon>
@@ -19,7 +19,7 @@
         </el-card>
       </el-col>
       
-      <el-col :xs="24" :sm="12" :md="6">
+      <el-col :xs="24" :sm="12" :md="8">
         <el-card shadow="hover" class="stats-card">
           <div class="stats-icon pending-icon">
             <el-icon><Timer /></el-icon>
@@ -34,7 +34,7 @@
         </el-card>
       </el-col>
       
-      <el-col :xs="24" :sm="12" :md="6">
+      <el-col :xs="24" :sm="12" :md="8">
         <el-card shadow="hover" class="stats-card">
           <div class="stats-icon users-icon">
             <el-icon><User /></el-icon>
@@ -42,18 +42,6 @@
           <div class="stats-info">
             <div class="stats-value">{{ stats.totalUsers || 0 }}</div>
             <div class="stats-label">用户总数</div>
-          </div>
-        </el-card>
-      </el-col>
-      
-      <el-col :xs="24" :sm="12" :md="6">
-        <el-card shadow="hover" class="stats-card">
-          <div class="stats-icon views-icon">
-            <el-icon><View /></el-icon>
-          </div>
-          <div class="stats-info">
-            <div class="stats-value">{{ formatNumber(stats.totalViews || 0) }}</div>
-            <div class="stats-label">总播放量</div>
           </div>
         </el-card>
       </el-col>
@@ -121,7 +109,6 @@ const stats = reactive({
   totalVideos: 0,
   pendingVideos: 0,
   totalUsers: 0,
-  totalViews: 0
 })
 
 // 最近待审核视频

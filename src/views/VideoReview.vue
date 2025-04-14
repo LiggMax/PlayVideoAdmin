@@ -33,11 +33,6 @@
         <el-table-column prop="title" label="标题" min-width="200" show-overflow-tooltip />
         <el-table-column prop="uploaderName" label="上传者" width="120" align="center" />
         <el-table-column prop="category" label="分类" width="100" align="center" />
-        <el-table-column prop="duration" label="时长" width="100" align="center">
-          <template #default="scope">
-            {{ formatDuration(scope.row.duration) }}
-          </template>
-        </el-table-column>
         <el-table-column prop="createTime" label="上传时间" width="170" align="center">
           <template #default="scope">
             {{ formatDateTime(scope.row.createTime) }}

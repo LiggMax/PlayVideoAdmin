@@ -34,19 +34,6 @@
             <template #title>视频审核</template>
           </el-menu-item>
         </el-sub-menu>
-        
-        <el-menu-item index="/users">
-          <el-icon><User /></el-icon>
-          <template #title>用户管理</template>
-        </el-menu-item>
-        <el-menu-item index="/comments">
-          <el-icon><ChatDotRound /></el-icon>
-          <template #title>评论管理</template>
-        </el-menu-item>
-        <el-menu-item index="/dynamics">
-          <el-icon><Postcard /></el-icon>
-          <template #title>动态管理</template>
-        </el-menu-item>
       </el-menu>
     </el-aside>
 

@@ -28,7 +28,6 @@
           <div class="video-meta">
             <span>上传者: {{ videoInfo.uploaderName }}</span>
             <span>分类: {{ videoInfo.category }}</span>
-            <span>时长: {{ formatDuration(videoInfo.duration) }}</span>
             <span>播放量: {{ videoInfo.views }}</span>
             <span>点赞数: {{ videoInfo.likes }}</span>
             <span>上传时间: {{ formatDateTime(videoInfo.createTime) }}</span>
