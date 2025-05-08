@@ -73,18 +73,6 @@
           width="180"
         />
         <el-table-column
-          prop="status"
-          label="状态"
-          width="100"
-          align="center"
-        >
-          <template #default="scope">
-            <el-tag :type="scope.row.status === 0 ? 'success' : 'danger'">
-              {{ scope.row.status === 0 ? '正常' : '禁用' }}
-            </el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column
           label="操作"
           fixed="right"
           width="180"
@@ -103,7 +91,7 @@
               type="danger"
               @click="handleDelete(scope.row)"
             >
-              {{ scope.row.status === 0 ? '禁用' : '启用' }}
+              删除
             </el-button>
           </template>
         </el-table-column>
@@ -137,6 +125,12 @@
         <el-form-item label="用户名" prop="username">
           <el-input v-model="editForm.username" disabled />
         </el-form-item>
+        <el-form-item label="头像" prop="avatarUrl">
+          <div class="avatar-upload">
+            <el-avatar :size="64" :src="editForm.avatarUrl || defaultAvatar" class="preview-avatar" />
+            <el-input v-model="editForm.avatarUrl" placeholder="请输入头像URL地址" />
+          </div>
+        </el-form-item>
         <el-form-item label="昵称" prop="nickname">
           <el-input v-model="editForm.nickname" />
         </el-form-item>
@@ -161,7 +155,7 @@
 import { ref, onMounted, reactive } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search as ElIconSearch } from '@element-plus/icons-vue'
-import { getUserList, updateUser, toggleUserStatus } from '../api/user'
+import { getUserList, updateUser, deleteUser } from '../api/user'
 
 // 默认头像
 const defaultAvatar = 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png'
@@ -182,7 +176,8 @@ const editForm = reactive({
   username: '',
   nickname: '',
   email: '',
-  phone: ''
+  phone: '',
+  avatarUrl: ''
 })
 
 // 表单验证规则
@@ -203,15 +198,8 @@ const fetchUserList = async () => {
 
     const response = await getUserList()
     
-    if (response.success) {
       userList.value = response.data
       total.value = response.total || response.data.length
-    } else {
-      ElMessage.error(response.message || '获取用户列表失败')
-    }
-  } catch (error) {
-    console.error('获取用户列表失败', error)
-    ElMessage.error('获取用户列表失败')
   } finally {
     loading.value = false
   }
@@ -224,6 +212,7 @@ const handleEdit = (row) => {
   editForm.nickname = row.nickname
   editForm.email = row.email
   editForm.phone = row.phone
+  editForm.avatarUrl = row.avatarUrl
   dialogVisible.value = true
 }
 
@@ -237,54 +226,14 @@ const submitEdit = async () => {
         loading.value = true
         const response = await updateUser(editForm)
         
-        if (response.success) {
           ElMessage.success('编辑成功')
           dialogVisible.value = false
           // 更新列表
-          fetchUserList()
-        } else {
-          ElMessage.error(response.message || '编辑失败')
-        }
-      } catch (error) {
-        console.error('编辑用户失败', error)
-        ElMessage.error('编辑用户失败')
+          await fetchUserList()
       } finally {
         loading.value = false
       }
     }
-  })
-}
-
-// 禁用用户
-const handleDelete = (row) => {
-  ElMessageBox.confirm(
-    `确认要${row.status === 0 ? '禁用' : '启用'}用户 ${row.username} 吗？`,
-    '警告',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning'
-    }
-  ).then(async () => {
-    try {
-      loading.value = true
-      const response = await toggleUserStatus(row.id)
-      
-      if (response.success) {
-        ElMessage.success(`${row.status === 0 ? '禁用' : '启用'}成功`)
-        // 更新列表
-        fetchUserList()
-      } else {
-        ElMessage.error(response.message || '操作失败')
-      }
-    } catch (error) {
-      console.error('操作失败', error)
-      ElMessage.error('操作失败')
-    } finally {
-      loading.value = false
-    }
-  }).catch(() => {
-    // 用户取消操作
   })
 }
 
@@ -303,6 +252,34 @@ const handleSizeChange = (val) => {
 const handleCurrentChange = (val) => {
   currentPage.value = val
   fetchUserList()
+}
+
+// 删除用户
+const handleDelete = (row) => {
+  ElMessageBox.confirm(
+    `确认要删除用户 ${row.username} 吗？此操作不可恢复！`,
+    '警告',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }
+  ).then(async () => {
+    try {
+      loading.value = true
+      await deleteUser(row.id)
+      ElMessage.success('删除成功')
+      // 更新列表
+      await fetchUserList()
+    } catch (error) {
+      console.error('删除失败', error)
+      ElMessage.error('删除失败')
+    } finally {
+      loading.value = false
+    }
+  }).catch(() => {
+    // 用户取消操作
+  })
 }
 
 // 组件挂载时获取用户列表
@@ -335,5 +312,17 @@ onMounted(() => {
 .dialog-footer {
   display: flex;
   justify-content: flex-end;
+}
+
+.avatar-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.preview-avatar {
+  margin-bottom: 10px;
+  border: 1px solid #dcdfe6;
 }
 </style> 

@@ -11,24 +11,16 @@ export function getUserList() {
 //更新用户信息
 export function updateUser(data) {
   return request({
-    url: "/api/admin/updateUser",
+    url: "/admin/UserEdit",
     method: "put",
     data
   });
 }
 
-//禁用/启用用户
-export function toggleUserStatus(id) {
+//删除用户
+export function deleteUser(id) {
   return request({
-    url: `/api/admin/toggleUserStatus/${id}`,
-    method: "post"
-  });
-}
-
-//获取用户详细信息
-export function getUserDetail(id) {
-  return request({
-    url: `/api/admin/user/${id}`,
-    method: "get"
+    url: `/admin/UserDelete/${id}`,
+    method: "delete"
   });
 }
