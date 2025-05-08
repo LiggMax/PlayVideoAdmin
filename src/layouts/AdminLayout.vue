@@ -34,6 +34,17 @@
             <template #title>视频审核</template>
           </el-menu-item>
         </el-sub-menu>
+        
+        <el-sub-menu index="/user">
+          <template #title>
+            <el-icon><User /></el-icon>
+            <span>用户管理</span>
+          </template>
+          <el-menu-item index="/users">
+            <el-icon><User /></el-icon>
+            <template #title>用户列表</template>
+          </el-menu-item>
+        </el-sub-menu>
       </el-menu>
     </el-aside>
 

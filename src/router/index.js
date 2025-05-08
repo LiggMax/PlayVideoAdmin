@@ -28,6 +28,12 @@ const routes = [
         name: 'VideoDetail',
         component: () => import('../views/VideoDetail.vue'),
         meta: { title: '视频详情' }
+      },
+      {
+        path: '/users',
+        name: 'Users',
+        component: () => import('../views/Users.vue'),
+        meta: { title: '用户管理' }
       }
     ]
   },
